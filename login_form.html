@@ -1,0 +1,71 @@
+<?php
+
+@include 'config.php';
+
+if(isset($_POST['submit'])){
+
+    $name = mysqli_real_escape_string($conn, $_POST['name']);
+    $email = mysqli_real_escape_string($conn, $_POST['email']);
+    $pass =md5($_POST['password']);
+    $cpass =md5($_POST['cpassword']);
+    $user_type = ($_POST['user_type']);
+
+    $select = " SELECT * FROM user_form WHERE email = '$email' && password = '$pass' ";
+    
+    $result = mysqli_query($conn, $select);
+
+    $result = mysqli_query($conn, $select);
+    if(mysqli_num_rows($result) > 0){
+
+        $row = mysqli_fetch_array($result);
+
+		if($row['user_type']== 'admin'){
+
+			$_SESSION['admin_name'] = $row['name'];
+			header('location:admin_page.php');
+
+		}elseif($row['user_type']== 'user'){
+
+			$_SESSION['user_name'] = $row['name'];
+			header('location:user_page.php');
+		}
+
+	}else{
+		$error[] = 'incorrect email or password!';
+	}
+
+};
+?>
+
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Slab" rel="stylesheet">
+    <link href="quiz.css" rel="stylesheet">
+	<title>Login Page</title>
+</head>
+<body>
+	<h1>Login to Your Account</h1>
+    <form id="login-form" method="post">
+		<h2>Login</h2>
+		<?php
+		if(isset($error)){
+			foreach($error as $error){
+				echo '<span class="error-msg">'.$error.'</span>';
+			};
+		};
+		?>
+		<label for="email">Username:</label>
+		<input type="text" id="email" name="email" required>
+
+		<label for="password">Password:</label>
+		<input type="password" id="password" name="password" required>
+
+		<input type="submit" value="Login">
+		<p>don't have an account? <a href="register_form.html">register now</a></p>
+        <a href="index.html">quizPage </a>
+	</form>
+</body>
+

@@ -12,6 +12,15 @@ var nextButton = document.getElementById('nextButton');
 var previousButton = document.getElementById('previousButton');
 var resultCont = document.getElementById('result');
 
+function submitForm() {
+    const username = document.getElementById('username').value;
+    const password = document.getElementById('password').value;
+    
+    // validate username and password
+    if (username === 'myusername' && password === 'mypassword') 
+      alert('Login successful!')};
+      // redirect
+  
 function loadQuestion (questionIndex) {
     var q = questions[questionIndex];
     questionEl.textContent = (questionIndex + 1) +' .' + q.question;
